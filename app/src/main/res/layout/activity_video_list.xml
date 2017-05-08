@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="32dp"
+        android:paddingBottom="32dp">
+
+        <Button
+            android:id="@+id/btn_tencent_normal"
+            style="@style/VideoWebViewBtnStyle"
+            android:text="腾讯视频 -- 普通网页"/>
+
+        <Button
+            android:id="@+id/btn_tencent_fullscreen"
+            style="@style/VideoWebViewBtnStyle"
+            android:text="腾讯视频 -- 全屏网页"/>
+
+        <Button
+            android:id="@+id/btn_bilibili"
+            style="@style/VideoWebViewBtnStyle"
+            android:text="B站"/>
+
+        <Button
+            android:id="@+id/btn_tudou"
+            style="@style/VideoWebViewBtnStyle"
+            android:text="土豆"/>
+
+    </LinearLayout>
+
+</ScrollView>
