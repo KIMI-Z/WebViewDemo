@@ -67,12 +67,16 @@ public class BaseWebView extends WebView{
                 mSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
             }
             // 设置字体默认缩放大小(改变网页字体大小,setTextSize  api14被弃用)
-            //ws.setTextZoom(100);
+            //mSettings.setTextZoom(100);
         }
 
         webSettingsImp(mSettings);
     }
 
+    /**
+     * 由子类更加业务需求，增加 webSettings 属性
+     * @param webSettings
+     */
     protected void webSettingsImp(WebSettings webSettings){
 
     }

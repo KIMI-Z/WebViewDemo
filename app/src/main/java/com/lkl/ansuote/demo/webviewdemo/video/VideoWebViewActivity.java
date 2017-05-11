@@ -7,7 +7,6 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebChromeClient;
@@ -149,7 +148,6 @@ public class VideoWebViewActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        Log.i("lkl", "onBackPressed + ; canGoBack = " + mVideoWebView.canGoBack());
         if (null != mVideoWebView) {
             if (mVideoWebView.canGoBack()) {
                 mVideoWebView.goBack();

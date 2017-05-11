@@ -8,7 +8,6 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -55,7 +54,7 @@ public class VideoWebView extends BaseWebView{
     }
 
     /**
-     * 响应改变浏览器中装饰元素的事件（JavaScript 警告，网页图标，状态条加载，网页标题的刷新）
+     * 响应改变浏览器中装饰元素的事件（JavaScript 警告，网页图标，状态条加载，网页标题的刷新，进入／退出全屏）
      */
     private class CustomWebChromClient extends WebChromeClient {
 
@@ -67,12 +66,12 @@ public class VideoWebView extends BaseWebView{
         @Override
         public void onShowCustomView(View view, CustomViewCallback callback) {
             super.onShowCustomView(view, callback);
-            Log.i("lkl", "onShowCutomView");
             mCallback=callback;
+            //回调给外层，由外层处理全屏触发后的逻辑
             if (null != mOnVideoWebViewListener) {
                 mOnVideoWebViewListener.onShowCustomView(view, callback);
             }
-            mFullScreenMode = true;
+            mFullScreenMode = true; //标识全屏
         }
 
         /**
@@ -81,11 +80,11 @@ public class VideoWebView extends BaseWebView{
         @Override
         public void onHideCustomView() {
             super.onHideCustomView();
-            Log.i("lkl", "onHideCustomView");
+            //回调给外层，由外层处理退出全屏的逻辑
             if (null != mOnVideoWebViewListener) {
                 mOnVideoWebViewListener.onHideCustomView(mCallback);
             }
-            mFullScreenMode = false;
+            mFullScreenMode = false;//标识退出全屏
         }
     }
 
@@ -97,7 +96,6 @@ public class VideoWebView extends BaseWebView{
             //页面加载完成的时候，注入js
             String js= TagUtils.getJs(url);
             view.loadUrl(js);
-            Log.i("lkl", "onPageFinished -- url = " + url + "\njs = " + js);
         }
 
         /**
@@ -123,7 +121,10 @@ public class VideoWebView extends BaseWebView{
             final String  url = uri.toString();
             //final String host = uri.getHost();  //m.youku.com
             //final String scheme = uri.getScheme();  // http
-
+            /**
+             * 此处用来处理，部分机型加载网页，有时除了返回url。
+             * 还有返回带有 intent:// 的格式，该格式带有启动app的action，可以启动对应的app
+             */
             if (url.startsWith("intent://")) {
                 try {
                     Context context = view.getContext();
@@ -157,6 +158,9 @@ public class VideoWebView extends BaseWebView{
 
     private class VideoJsObject {
 
+        /**
+         * 从线程回调，要更新 UI 操作，要 post 到主线程
+         */
         @JavascriptInterface
         public void fullscreen() {
             if (null != mOnVideoWebViewListener) {
@@ -170,7 +174,10 @@ public class VideoWebView extends BaseWebView{
         }
     }
 
-
+    /**
+     * 设置进入／退出全屏的监听
+     * @param onVideoWebViewListener
+     */
     public void setOnVideoWebViewListener(OnVideoWebViewListener onVideoWebViewListener) {
         mOnVideoWebViewListener = onVideoWebViewListener;
     }
