@@ -39,6 +39,7 @@ public class VideoWebViewActivity extends Activity {
 
     private void initWebView() {
         if (null != mVideoWebView) {
+            mVideoWebView.setIgnoreSslError(true);  //设置忽略证书错误
             mVideoWebView.setOnVideoWebViewListener(new VideoWebViewListenerImp());
         }
     }

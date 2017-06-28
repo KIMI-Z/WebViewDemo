@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -27,6 +29,7 @@ public class VideoWebView extends BaseWebView{
     private OnVideoWebViewListener mOnVideoWebViewListener;
     private WebChromeClient.CustomViewCallback mCallback;
     private boolean mFullScreenMode;  //是否进入了横屏全屏模式
+    private boolean mIgnoreSslError;  //是否忽略ssl证书错误
 
     public VideoWebView(Context context) {
         super(context);
@@ -89,6 +92,16 @@ public class VideoWebView extends BaseWebView{
     }
 
     private class CustomWebClient extends WebViewClient {
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            if (mIgnoreSslError) {
+                // let's ignore ssl error
+                handler.proceed();
+            } else {
+                super.onReceivedSslError(view, handler, error);
+            }
+        }
 
         @Override
         public void onPageFinished(WebView view, String url) {
@@ -222,6 +235,14 @@ public class VideoWebView extends BaseWebView{
      */
     public void setFullScreenMode(boolean fullScreenMode) {
         mFullScreenMode = fullScreenMode;
+    }
+
+    /**
+     * 设置是否忽略ssl验证错误
+     * @param ignoreSslError
+     */
+    public void setIgnoreSslError(boolean ignoreSslError) {
+        mIgnoreSslError = ignoreSslError;
     }
 
     /**
